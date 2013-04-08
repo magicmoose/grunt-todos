@@ -14,6 +14,7 @@ module.exports = function(grunt) {
         // Merge task-specific and/or target-specific options with these defaults.
         var options = this.options({
             verbose: true, // false will skip reporting on files without tasks
+            coloredOutput: true, // Colors the console output
             priorities : {
                 low : /TODO/, //This will print out blue
                 med : /FIXME/, //This will print out yellow
@@ -84,7 +85,11 @@ module.exports = function(grunt) {
             }).join('');
 
             if(_.isUndefined(f.dest)) {
-                grunt.log.write(tasks);
+                if (options.coloredOutput === true) {
+                    grunt.log.write(tasks);
+                } else{
+                    grunt.log.write(grunt.log.uncolor(tasks));
+                }
             } else {
                 grunt.file.write(f.dest, grunt.log.uncolor(tasks));
                 grunt.log.writeln('File "' + f.dest + '" created.');
